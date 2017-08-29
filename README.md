@@ -63,7 +63,8 @@ The `docd` tool runs as either
 
 ## Example Usage (code)
 
-'''package main
+'''go
+package main
 
 import (
 	"fmt"
@@ -92,5 +93,5 @@ func main() {
 	fmt.Println(out)
     // docx to text ///////
 }
-
+'''
 A work in progress. Big props to https://github.com/sajari/docconv ! This is bactailly that + full tesseract OCR. Will deploy the completed system to IBM Blumix I think. I use Couch/Pouch for local storage and that automatically syncs with Cloudant. 
