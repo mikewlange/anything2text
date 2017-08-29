@@ -63,7 +63,7 @@ The `docd` tool runs as either
 
 ## Example Usage (code)
 
-'''go
+```go
 package main
 
 import (
@@ -77,14 +77,14 @@ func main() {
 	// Create a new client, using the default endpoint (localhost:8888)
 	c := client.New()
 
-   // docx to text ///////
+        // docx to text 
 	res, err := client.ConvertPath(c, "heychris.docx")
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println(res)
 
-    // OCR to text ///////
+        // OCR to text 
 	out := gosseract.Must(gosseract.Params{
 		Src:       "Text_Entropy.png",
 		Languages: "eng",
@@ -93,5 +93,7 @@ func main() {
 	fmt.Println(out)
     // docx to text ///////
 }
-'''
+```
+
+
 A work in progress. Big props to https://github.com/sajari/docconv ! This is bactailly that + full tesseract OCR. Will deploy the completed system to IBM Blumix I think. I use Couch/Pouch for local storage and that automatically syncs with Cloudant. 
