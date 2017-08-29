@@ -1,5 +1,5 @@
 # docconv
-//[![Build Status](https://travis-ci.org/sajari/docconv.svg?branch=master)](https://travis-ci.org/sajari/docconv)
+[![Build Status](https://travis-ci.org/mikewlange/anything2text.svg?branch=master)](https://travis-ci.org/mikewlange/anything2text)
 
 A Go wrapper library to convert PDF, DOC, DOCX, XML, HTML, RTF, ODT, Pages documents and images (see optional dependencies below) to plain text.
 
