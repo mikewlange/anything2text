@@ -1,35 +1,37 @@
-# anything2text
+# docconv
+[![Build Status](https://travis-ci.org/sajari/docconv.svg?branch=master)](https://travis-ci.org/sajari/docconv)
 
-A Go library about to be Micro-service to convert PDF, DOC, DOCX, XML, HTML, RTF, ODT, Pages documents and images (Tesseract) to plain text.
+A Go wrapper library to convert PDF, DOC, DOCX, XML, HTML, RTF, ODT, Pages documents and images (see optional dependencies below) to plain text.
 
 ## Installation
 
+If you haven't setup Go before, you need to first set a `GOPATH` (see [https://golang.org/doc/code.html#GOPATH](https://golang.org/doc/code.html#GOPATH)).
+
 To fetch and build the code:
 
-    $ go get github.com/mikewlange/anything2text/...
+    $ go get github.com/sajari/docconv/...
 
 This will also build the command line tool `docd` into `$GOPATH/bin` (assumed to be in your `PATH` already).
 
 ## Dependencies
-tidy, wv, popplerutils, unrtf,
-
-https://github.com/JalfResi/justext
-brew install poppler
+tidy, wv, popplerutils, unrtf, https://github.com/JalfResi/justext
 
 Example install of dependencies (not all systems):
 
- lin   $ sudo apt-get install poppler-utils wv unrtf tidy
-  mac  $ go get github.com/JalfResi/justext brew install poppler
+    $ sudo apt-get install poppler-utils wv unrtf tidy
+    $ go get github.com/JalfResi/justext
 
-Add image support to the `docconv` library you first need to install and build https://github.com/otiai10/gosseract.  Now you can add `-tags ocr` to any `go` command when building/fetching `docconv` to include support for processing images:
+### Optional Dependencies
 
-    $ go get -tags ocr github.com/mikewlange/anything2text/...
-    
-    ## docd tool
+To add image support to the `docconv` library you first need to install and build https://github.com/otiai10/gosseract.  Now you can add `-tags ocr` to any `go` command when building/fetching `docconv` to include support for processing images:
+
+    $ go get -tags ocr github.com/sajari/docconv/...
+
+## docd tool
 
 The `docd` tool runs as either
 
-1. a service on port 8888 (by default)
+1. a service on port 8000 (by default)
 
    Documents can be sent as a multipart POST request and the plain text (body) and meta information are then returned as a JSON object
 
@@ -46,7 +48,7 @@ The `docd` tool runs as either
    ```docd -input document.pdf```
 
 ### Optional Flags
- - "addr" - the bind address for the HTTP server, default is ":8888"
+ - "addr" - the bind address for the HTTP server, default is ":8000"
  - "log-level"
     - 0: errors & critical info
     - 1: inclues 0 and logs each request as well
@@ -62,9 +64,13 @@ The `docd` tool runs as either
 ### How to start the service
 ```docd -log-level 0   # will only log errors & critical info ```
 
-```docd -addr :8888 -log-level 1   # will run on port 8888 and log each request as well ```
+```docd -addr :8000 -log-level 1   # will run on port 8000 and log each request as well ```
 
 ## Example Usage (code)
+Some basic code is shown below, but normally you would accept the file by http or open it from the file system. It should be enough to get you started though...
+
+Use case 1: run locally 
+Note: this assumes you have the dependencies installed.
 
 ```go
 package main
@@ -72,31 +78,39 @@ package main
 import (
 	"fmt"
 	"log"
-	"github.com/otiai10/gosseract"
-	"github.com/sajari/docconv/client"
+
+	"github.com/sajari/docconv"
 )
 
 func main() {
-	// Create a new client, using the default endpoint (localhost:8888)
-	c := client.New()
-
-        // docx to text 
-	res, err := client.ConvertPath(c, "demo.docx")
+	res, err := docconv.ConvertPath("your-file.pdf")
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println(res)
-
-        // OCR to text 
-	out := gosseract.Must(gosseract.Params{
-		Src:       "Text_Entropy.png",
-		Languages: "eng",
-
-	})
-	fmt.Println(out)
-    // docx to text ///////
 }
 ```
 
+Use case 2: request over the network
 
-A work in progress. Big props to https://github.com/sajari/docconv ! This is bactailly that + full tesseract OCR. Will deploy the completed system to IBM Blumix I think. I use Couch/Pouch for local storage and that automatically syncs with Cloudant. 
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/sajari/docconv/client"
+)
+
+func main() {
+	// Create a new client, using the default endpoint (localhost:8000)
+	c := client.New()
+
+	res, err := client.ConvertPath(c, "your-file.pdf")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(res)
+}
+```

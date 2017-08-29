@@ -1,6 +1,6 @@
 // +build !ocr
 
-package docconv
+package main
 
 import (
 	"fmt"

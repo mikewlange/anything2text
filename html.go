@@ -1,6 +1,6 @@
 // +build !appengine
 
-package docconv
+package main
 
 import (
 	"bytes"
