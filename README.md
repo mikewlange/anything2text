@@ -1,5 +1,5 @@
 # docconv
-[![Build Status](https://travis-ci.org/sajari/docconv.svg?branch=master)](https://travis-ci.org/sajari/docconv)
+//[![Build Status](https://travis-ci.org/sajari/docconv.svg?branch=master)](https://travis-ci.org/sajari/docconv)
 
 A Go wrapper library to convert PDF, DOC, DOCX, XML, HTML, RTF, ODT, Pages documents and images (see optional dependencies below) to plain text.
 
@@ -114,3 +114,44 @@ func main() {
 	fmt.Println(res)
 }
 ```
+Use Case 3 - for shits and giggles. 
+'''go 
+
+package main
+
+import (
+	"fmt"
+	"log"
+	"github.com/otiai10/gosseract"
+	"github.com/sajari/docconv"
+	
+)
+
+func main() {
+	// Create a new client, using the default endpoint (localhost:8000)
+	c := client.New()
+
+// pdf VIA NETWORK
+	res, err := client.ConvertPath(c, "annual_report_2009.pdf")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(res)
+
+//docx local
+	res1, err1 := docconv.ConvertPath("demo.docx")
+	if err1 != nil {
+		log.Fatal(err1)
+	}
+	fmt.Println(res1)
+	
+//png local
+	// IMAGE
+	out := gosseract.Must(gosseract.Params{
+		Src:       "Text_Entropy.png",
+		Languages: "eng",
+	})
+	fmt.Println(out)
+}
+
+'''
