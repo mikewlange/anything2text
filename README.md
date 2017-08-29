@@ -78,7 +78,7 @@ func main() {
 	c := client.New()
 
         // docx to text 
-	res, err := client.ConvertPath(c, "heychris.docx")
+	res, err := client.ConvertPath(c, "demo.docx")
 	if err != nil {
 		log.Fatal(err)
 	}
